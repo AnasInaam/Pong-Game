@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Pong Game - Player vs AI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏓 Enhanced Pong Game</h1>
+            <p class="subtitle">Player (Left) vs AI (Right)</p>
+        </div>
+        
+        <div class="game-info">
+            <div class="score-board">
+                <div class="player-score">
+                    <span class="label">Player</span>
+                    <span class="score" id="playerScore">0</span>
+                </div>
+                <div class="ai-score">
+                    <span class="label">AI</span>
+                    <span class="score" id="aiScore">0</span>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <label for="difficulty">AI Difficulty:</label>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                    <option value="impossible">Impossible</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="game-wrapper">
+            <canvas id="pongCanvas" width="800" height="500"></canvas>
+            
+            <div class="game-overlay" id="gameOverlay">
+                <div class="overlay-content">
+                    <h2 id="overlayTitle">Enhanced Pong Game</h2>
+                    <p id="overlayMessage">Move your mouse to control the left paddle</p>
+                    <button id="startButton" class="game-button">Start Game</button>
+                    <button id="restartButton" class="game-button hidden">Play Again</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li>🖱️ Move your <strong>mouse up and down</strong> to control the left paddle</li>
+                <li>🎯 First to <strong>7 points</strong> wins the game</li>
+                <li>⚡ Ball speed increases with each paddle hit</li>
+                <li>🤖 Choose AI difficulty to match your skill level</li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p>Created with ❤️ | © 2025 AnasInaam</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
