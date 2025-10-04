@@ -3,67 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Pong Game - Player vs AI</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>🎮 Ultimate Pong - Next Gen Gaming Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'rajdhani': ['Rajdhani', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🏓 Enhanced Pong Game</h1>
-            <p class="subtitle">Player (Left) vs AI (Right)</p>
-        </div>
-        
-        <div class="game-info">
-            <div class="score-board">
-                <div class="player-score">
-                    <span class="label">Player</span>
-                    <span class="score" id="playerScore">0</span>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen overflow-x-hidden font-rajdhani">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-blob"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-0 left-1/2 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
+    </div>
+
+    <div class="relative z-10 container mx-auto px-4 py-6 max-w-7xl">
+        <!-- Header with Stats -->
+        <header class="glass-card rounded-2xl p-6 mb-6 animate-fade-in">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
+                <div class="text-center lg:text-left">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-orbitron font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 mb-2 animate-glow">
+                        🎮 ULTIMATE PONG
+                    </h1>
+                    <p class="text-gray-300 text-sm md:text-base font-light">Next Generation Gaming Experience</p>
                 </div>
-                <div class="ai-score">
-                    <span class="label">AI</span>
-                    <span class="score" id="aiScore">0</span>
+                <div class="flex gap-3 flex-wrap justify-center">
+                    <button id="settingsBtn" class="btn-secondary" title="Settings">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </button>
+                    <button id="achievementsBtn" class="btn-secondary" title="Achievements">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                        </svg>
+                    </button>
+                    <button id="leaderboardBtn" class="btn-secondary" title="Leaderboard">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </button>
+                    <button id="soundToggle" class="btn-secondary" title="Toggle Sound">
+                        <svg id="soundOnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+                        </svg>
+                        <svg id="soundOffIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
-            
-            <div class="controls">
-                <label for="difficulty">AI Difficulty:</label>
-                <select id="difficulty">
-                    <option value="easy">Easy</option>
-                    <option value="medium" selected>Medium</option>
-                    <option value="hard">Hard</option>
-                    <option value="impossible">Impossible</option>
-                </select>
-            </div>
-        </div>
-        
-        <div class="game-wrapper">
-            <canvas id="pongCanvas" width="800" height="500"></canvas>
-            
-            <div class="game-overlay" id="gameOverlay">
-                <div class="overlay-content">
-                    <h2 id="overlayTitle">Enhanced Pong Game</h2>
-                    <p id="overlayMessage">Move your mouse to control the left paddle</p>
-                    <button id="startButton" class="game-button">Start Game</button>
-                    <button id="restartButton" class="game-button hidden">Play Again</button>
+        </header>
+
+        <div class="grid lg:grid-cols-4 gap-6">
+            <!-- Left Sidebar -->
+            <aside class="lg:col-span-1 space-y-4">
+                <!-- Score Card -->
+                <div class="glass-card rounded-2xl p-6 animate-slide-in-left">
+                    <h3 class="text-xl font-orbitron font-bold text-cyan-400 mb-4 flex items-center gap-2">
+                        <span class="text-2xl">🏆</span> SCORE
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="score-card bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-2 border-cyan-500/50">
+                            <div class="text-xs text-gray-400 mb-1">PLAYER</div>
+                            <div id="playerScore" class="text-4xl font-orbitron font-black text-cyan-400">0</div>
+                        </div>
+                        <div class="score-card bg-gradient-to-r from-pink-500/20 to-purple-500/20 border-2 border-pink-500/50">
+                            <div class="text-xs text-gray-400 mb-1">AI OPPONENT</div>
+                            <div id="aiScore" class="text-4xl font-orbitron font-black text-pink-400">0</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <!-- Game Stats -->
+                <div class="glass-card rounded-2xl p-6 animate-slide-in-left animation-delay-200">
+                    <h3 class="text-lg font-orbitron font-bold text-purple-400 mb-3">📊 STATS</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Hits:</span>
+                            <span id="hitCount" class="text-white font-semibold">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Max Speed:</span>
+                            <span id="maxSpeed" class="text-white font-semibold">5.0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Rally:</span>
+                            <span id="rallyCount" class="text-white font-semibold">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Time:</span>
+                            <span id="gameTime" class="text-white font-semibold">00:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Power-ups Info -->
+                <div class="glass-card rounded-2xl p-6 animate-slide-in-left animation-delay-400">
+                    <h3 class="text-lg font-orbitron font-bold text-yellow-400 mb-3">⚡ POWER-UP</h3>
+                    <div id="powerUpDisplay" class="text-center py-4">
+                        <div class="text-3xl mb-2">💫</div>
+                        <div class="text-xs text-gray-400">None Active</div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Game Area -->
+            <main class="lg:col-span-3">
+                <div class="glass-card rounded-2xl p-4 md:p-8 animate-scale-in">
+                    <!-- Game Mode Selector -->
+                    <div class="mb-4 flex flex-wrap gap-2 justify-center">
+                        <button class="game-mode-btn active" data-mode="classic">
+                            <span class="text-lg">🎮</span> Classic
+                        </button>
+                        <button class="game-mode-btn" data-mode="survival">
+                            <span class="text-lg">⚔️</span> Survival
+                        </button>
+                        <button class="game-mode-btn" data-mode="timeattack">
+                            <span class="text-lg">⏱️</span> Time Attack
+                        </button>
+                    </div>
+
+                    <!-- Difficulty & Controls -->
+                    <div class="mb-4 flex flex-wrap gap-4 justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm text-gray-300">Difficulty:</label>
+                            <select id="difficulty" class="select-custom">
+                                <option value="easy">🟢 Easy</option>
+                                <option value="medium" selected>🟡 Medium</option>
+                                <option value="hard">🔴 Hard</option>
+                                <option value="impossible">⚫ Impossible</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm text-gray-300">Control:</label>
+                            <select id="controlMode" class="select-custom">
+                                <option value="mouse">🖱️ Mouse</option>
+                                <option value="keyboard">⌨️ Keyboard</option>
+                                <option value="touch">📱 Touch</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Container -->
+                    <div class="relative canvas-container">
+                        <canvas id="pongCanvas" width="900" height="600"></canvas>
+                        
+                        <!-- Game Overlay -->
+                        <div id="gameOverlay" class="game-overlay">
+                            <div class="overlay-content">
+                                <h2 id="overlayTitle" class="text-3xl md:text-5xl font-orbitron font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 mb-4"></h2>
+                                <p id="overlayMessage" class="text-lg md:text-xl text-gray-300 mb-6"></p>
+                                <div class="flex gap-4 justify-center flex-wrap">
+                                    <button id="startButton" class="btn-primary">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Start Game
+                                    </button>
+                                    <button id="restartButton" class="btn-primary hidden">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                        </svg>
+                                        Play Again
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pause Overlay -->
+                        <div id="pauseOverlay" class="game-overlay hidden">
+                            <div class="overlay-content">
+                                <h2 class="text-4xl font-orbitron font-black text-yellow-400 mb-4">⏸️ PAUSED</h2>
+                                <p class="text-gray-300 mb-6">Press SPACE or click Resume to continue</p>
+                                <button id="resumeButton" class="btn-primary">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Resume
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Control Hints -->
+                    <div class="mt-4 p-4 bg-slate-800/50 rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-gray-300">
+                            <div class="flex items-center gap-2">
+                                <kbd class="kbd">SPACE</kbd> <span>Pause/Resume</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <kbd class="kbd">W/S</kbd> <span>Move Paddle (Keyboard)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <kbd class="kbd">ESC</kbd> <span>Main Menu</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions Card -->
+                <div class="glass-card rounded-2xl p-6 mt-6 animate-fade-in-up">
+                    <h3 class="text-2xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 mb-4">
+                        🎯 HOW TO DOMINATE
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="instruction-item">
+                            <span class="text-3xl mb-2 block">🎮</span>
+                            <h4 class="font-semibold text-cyan-400 mb-1">Game Modes</h4>
+                            <p class="text-sm text-gray-300">Classic: First to 7 wins | Survival: Don't miss! | Time Attack: Score in 60s</p>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="text-3xl mb-2 block">⚡</span>
+                            <h4 class="font-semibold text-purple-400 mb-1">Power-Ups</h4>
+                            <p class="text-sm text-gray-300">Catch falling power-ups: Speed Boost, Size Up, Slow Motion & more!</p>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="text-3xl mb-2 block">🎯</span>
+                            <h4 class="font-semibold text-pink-400 mb-1">Mastery</h4>
+                            <p class="text-sm text-gray-300">Hit ball with paddle edges for sharper angles. Chain rallies for combos!</p>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="text-3xl mb-2 block">🏆</span>
+                            <h4 class="font-semibold text-yellow-400 mb-1">Achievements</h4>
+                            <p class="text-sm text-gray-300">Unlock achievements and climb the leaderboard to become legendary!</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
-        
-        <div class="instructions">
-            <h3>How to Play</h3>
-            <ul>
-                <li>🖱️ Move your <strong>mouse up and down</strong> to control the left paddle</li>
-                <li>🎯 First to <strong>7 points</strong> wins the game</li>
-                <li>⚡ Ball speed increases with each paddle hit</li>
-                <li>🤖 Choose AI difficulty to match your skill level</li>
-            </ul>
-        </div>
-        
-        <footer>
-            <p>Created with ❤️ | © 2025 AnasInaam</p>
+
+        <!-- Footer -->
+        <footer class="text-center mt-8 py-6 text-gray-400 animate-fade-in">
+            <p class="text-sm">
+                Crafted with <span class="text-red-500">❤️</span> by <span class="font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">AnasInaam</span>
+            </p>
+            <p class="text-xs mt-2">© 2025 Ultimate Pong. All Rights Reserved.</p>
         </footer>
     </div>
-    
+
+    <!-- Modals -->
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-orbitron font-bold text-cyan-400">⚙️ Settings</h2>
+                <button class="modal-close" data-modal="settingsModal">&times;</button>
+            </div>
+            <div class="space-y-4">
+                <div class="setting-item">
+                    <label class="flex items-center justify-between">
+                        <span>Sound Effects</span>
+                        <input type="checkbox" id="soundEffectsToggle" class="toggle" checked>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label class="flex items-center justify-between">
+                        <span>Particle Effects</span>
+                        <input type="checkbox" id="particlesToggle" class="toggle" checked>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label class="flex items-center justify-between">
+                        <span>Screen Shake</span>
+                        <input type="checkbox" id="screenShakeToggle" class="toggle" checked>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <span class="block mb-2">Color Theme</span>
+                        <select id="themeSelect" class="select-custom w-full">
+                            <option value="neon">🌈 Neon</option>
+                            <option value="classic">⚪ Classic</option>
+                            <option value="sunset">🌅 Sunset</option>
+                            <option value="ocean">🌊 Ocean</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievements Modal -->
+    <div id="achievementsModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-orbitron font-bold text-yellow-400">🏆 Achievements</h2>
+                <button class="modal-close" data-modal="achievementsModal">&times;</button>
+            </div>
+            <div id="achievementsList" class="space-y-3 max-h-96 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboardModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-orbitron font-bold text-purple-400">📊 Leaderboard</h2>
+                <button class="modal-close" data-modal="leaderboardModal">&times;</button>
+            </div>
+            <div id="leaderboardList" class="space-y-2 max-h-96 overflow-y-auto"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
